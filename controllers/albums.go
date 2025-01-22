@@ -2,16 +2,13 @@ package controllers
 
 import (
 	"encoding/json"
+	"github.com/jeffscottbrown/applemusic/model"
 	"net/http"
 	"net/url"
-
-	"github.com/gin-gonic/gin"
-
-	"github.com/jeffscottbrown/applemusic/model"
 )
 
-func Search(c *gin.Context) {
-	searchTerm := c.Param("term")
+func Search(w http.ResponseWriter, r *http.Request) {
+	searchTerm := r.PathValue("term")
 	apiURL := "https://itunes.apple.com/search"
 
 	params := url.Values{}
@@ -23,16 +20,16 @@ func Search(c *gin.Context) {
 
 	resp, err := http.Get(fullURL)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to fetch data"})
+		json.NewEncoder(w).Encode(map[string]string{"error": "Failed to fetch data"})
 		return
 	}
 	defer resp.Body.Close()
 
 	var result model.SearchResult
 	if err := json.NewDecoder(resp.Body).Decode(&result); err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to parse JSON"})
+		json.NewEncoder(w).Encode(map[string]string{"error": "Failed to parse JSON"})
 		return
 	}
 
-	c.JSON(http.StatusOK, result)
+	json.NewEncoder(w).Encode(result)
 }

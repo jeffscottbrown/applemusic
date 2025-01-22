@@ -1,14 +1,16 @@
 package server
 
 import (
-	"github.com/gin-gonic/gin"
 	"github.com/jeffscottbrown/applemusic/controllers"
+	"net/http"
 )
 
 func RunServer() {
-	r := gin.Default()
-
-	r.GET("/search/:term", controllers.Search)
-
-	r.Run()
+	router := http.NewServeMux()
+	router.HandleFunc("/search/{term}", controllers.Search)
+	server := http.Server{
+		Addr:    ":8080",
+		Handler: router,
+	}
+	server.ListenAndServe()
 }
