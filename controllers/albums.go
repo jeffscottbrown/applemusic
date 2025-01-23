@@ -9,6 +9,11 @@ import (
 
 func Search(w http.ResponseWriter, r *http.Request) {
 	searchTerm := r.PathValue("term")
+	data := SearchApple(searchTerm)
+	json.NewEncoder(w).Encode(data)
+}
+
+func SearchApple(searchTerm string) map[string]interface{} {
 	apiURL := "https://itunes.apple.com/search"
 
 	params := url.Values{}
@@ -19,17 +24,20 @@ func Search(w http.ResponseWriter, r *http.Request) {
 	fullURL := apiURL + "?" + params.Encode()
 
 	resp, err := http.Get(fullURL)
+
+	data := make(map[string]interface{})
+
 	if err != nil {
-		json.NewEncoder(w).Encode(map[string]string{"error": "Failed to fetch data"})
-		return
-	}
-	defer resp.Body.Close()
+		data["error"] = "Failed to fetch data"
+	} else {
+		defer resp.Body.Close()
 
-	var result model.SearchResult
-	if err := json.NewDecoder(resp.Body).Decode(&result); err != nil {
-		json.NewEncoder(w).Encode(map[string]string{"error": "Failed to parse JSON"})
-		return
+		var result model.SearchResult
+		if err := json.NewDecoder(resp.Body).Decode(&result); err != nil {
+			data["error"] = "Failed to parse JSON"
+		} else {
+			data["searchResults"] = result
+		}
 	}
-
-	json.NewEncoder(w).Encode(result)
+	return data
 }
