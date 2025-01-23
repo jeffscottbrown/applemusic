@@ -1,8 +1,8 @@
 package web
 
 import (
-	"github.com/jeffscottbrown/applemusic/controllers"
 	"github.com/jeffscottbrown/applemusic/model"
+	"github.com/jeffscottbrown/applemusic/search"
 	"html/template"
 	"net/http"
 )
@@ -15,7 +15,7 @@ func Search(w http.ResponseWriter, r *http.Request) {
 	}
 
 	bandName := r.FormValue("band_name")
-	results := controllers.SearchApple(bandName)
+	results := search.SearchApple(bandName)
 
 	tmpl.Execute(w, struct {
 		Success    bool

@@ -1,14 +1,14 @@
 package server
 
 import (
-	"github.com/jeffscottbrown/applemusic/controllers"
+	"github.com/jeffscottbrown/applemusic/search"
 	"github.com/jeffscottbrown/applemusic/web"
 	"net/http"
 )
 
 func RunServer() {
 	router := http.NewServeMux()
-	router.HandleFunc("/search/{term}", controllers.Search)
+	router.HandleFunc("/search/{term}", search.Search)
 	router.HandleFunc("/", web.Search)
 
 	fs := http.FileServer(http.Dir("assets/"))
