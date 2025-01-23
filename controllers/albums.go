@@ -15,14 +15,7 @@ func Search(w http.ResponseWriter, r *http.Request) {
 }
 
 func SearchApple(searchTerm string) map[string]interface{} {
-	apiURL := "https://itunes.apple.com/search"
-
-	params := url.Values{}
-	params.Add("term", searchTerm)
-	params.Add("media", "music")
-	params.Add("entity", "album")
-
-	fullURL := apiURL + "?" + params.Encode()
+	fullURL := createSearchUrl(searchTerm)
 
 	slog.Debug("Querying Apple API", "url", fullURL)
 
@@ -43,4 +36,21 @@ func SearchApple(searchTerm string) map[string]interface{} {
 		}
 	}
 	return data
+}
+
+func createSearchUrl(searchTerm string) string {
+	apiURL := "https://itunes.apple.com/search"
+
+	params := createRequestParameters(searchTerm)
+
+	fullURL := apiURL + "?" + params.Encode()
+	return fullURL
+}
+
+func createRequestParameters(searchTerm string) url.Values {
+	params := url.Values{}
+	params.Add("term", searchTerm)
+	params.Add("media", "music")
+	params.Add("entity", "album")
+	return params
 }
