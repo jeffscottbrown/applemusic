@@ -2,6 +2,7 @@ package web
 
 import (
 	"fmt"
+	"github.com/jeffscottbrown/applemusic/commit"
 	"github.com/jeffscottbrown/applemusic/model"
 	"github.com/jeffscottbrown/applemusic/search"
 	"html/template"
@@ -12,7 +13,17 @@ import (
 func Search(w http.ResponseWriter, r *http.Request) {
 	tmpl := template.Must(template.ParseFiles("web/search.html"))
 	if r.Method != http.MethodPost {
-		tmpl.Execute(w, nil)
+		tmpl.Execute(w, struct {
+			CommitHash string
+			BuildTime  string
+			Error      bool
+			Success    bool
+		}{
+			commit.Hash,
+			commit.BuildTime,
+			false,
+			false,
+		})
 		return
 	}
 
@@ -27,9 +38,14 @@ func Search(w http.ResponseWriter, r *http.Request) {
 		Results    model.SearchResult
 		SearchTerm string
 		JsonUrl    string
+		CommitHash string
+		BuildTime  string
 	}{errorMessage == "",
 		errorMessage,
 		results,
 		bandName,
-		jsonUrl})
+		jsonUrl,
+		commit.Hash,
+		commit.BuildTime,
+	})
 }

@@ -66,3 +66,15 @@ th {
 tr:nth-of-type(even) {
     background-color: #f2f2f2;
 }
+
+.footer {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    padding-left: 2em;
+    padding-bottom: 2em;
+    color: darkgrey;
+    text-align: left;
+    font-size: 80%;
+}

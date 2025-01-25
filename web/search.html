@@ -16,11 +16,13 @@
                     <a class="nav-link" href="/">Home</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" target="_blank" href="https://github.com/jeffscottbrown/applemusic">GitHub Repo</a>
+                    <a class="nav-link" target="_blank" href="https://github.com/jeffscottbrown/applemusic">GitHub
+                        Repo</a>
                 </li>
             </ul>
         </div>
     </nav>
+
     {{if .Error}}
     <div class="alert alert-danger" role="alert">
         {{.Error}}
@@ -65,6 +67,9 @@
         <button>Search</button>
     </form>
     {{end}}
+    <div class="footer">
+        <span>Built from commit <a href="{{printf "https://github.com/jeffscottbrown/applemusic/commit/%s" .CommitHash }}">{{.CommitHash}}</a> at {{.BuildTime}}</span>
+    </div>
 </main>
 </body>
 </html>
