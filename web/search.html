@@ -18,6 +18,16 @@
     {{end}}
 
     {{if .Success}}
+    <div class="alert alert-info" role="alert">
+        <p>
+            In addition to this web interface there is also a JSON API available
+            at /search/[Enter A Band Name Here].
+        </p>
+
+        <p>
+            Example: <a target="_blank" href="{{ printf "/search/%s" .EscapedSearchTerm }}">{{.JsonUrl}}</a>
+        </p>
+    </div>
     <h1>Search Results</h1>
     <h2>Search Term: {{.SearchTerm}}</h2>
 
