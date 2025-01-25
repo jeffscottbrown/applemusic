@@ -3,6 +3,7 @@ package web
 import (
 	"fmt"
 	"github.com/jeffscottbrown/applemusic/commit"
+	"github.com/jeffscottbrown/applemusic/constants"
 	"github.com/jeffscottbrown/applemusic/model"
 	"github.com/jeffscottbrown/applemusic/search"
 	"html/template"
@@ -13,7 +14,8 @@ import (
 func Search(w http.ResponseWriter, r *http.Request) {
 	tmpl := template.Must(template.ParseFiles("web/search.html"))
 	searchModel := SearchModel{CommitHash: commit.Hash,
-		BuildTime: commit.BuildTime}
+		BuildTime:  commit.BuildTime,
+		GitHubRepo: constants.GitHubRepo}
 
 	if r.Method != http.MethodPost {
 
@@ -39,4 +41,5 @@ type SearchModel struct {
 	JsonUrl    string
 	Results    model.SearchResult
 	SearchTerm string
+	GitHubRepo string
 }

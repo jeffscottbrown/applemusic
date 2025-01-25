@@ -2,6 +2,7 @@ package search
 
 import (
 	"encoding/json"
+	"github.com/jeffscottbrown/applemusic/constants"
 	"github.com/jeffscottbrown/applemusic/model"
 	"log/slog"
 	"net/http"
@@ -42,11 +43,9 @@ func SearchApple(searchTerm string) (model.SearchResult, string) {
 }
 
 func createSearchUrl(searchTerm string) string {
-	apiURL := "https://itunes.apple.com/search"
-
 	params := createRequestParameters(searchTerm)
 
-	fullURL := apiURL + "?" + params.Encode()
+	fullURL := constants.AppleMusicAPI + "?" + params.Encode()
 	return fullURL
 }
 

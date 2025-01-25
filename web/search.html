@@ -69,7 +69,7 @@
     {{end}}
     <div class="footer">
         {{if .CommitHash}}
-        <span>Built from commit <a href="{{printf "https://github.com/jeffscottbrown/applemusic/tree/%s" .CommitHash }}">{{.CommitHash}}</a> at {{.BuildTime}}</span>
+        <span>Built from commit <a href="{{printf "%s/tree/%s" .GitHubRepo .CommitHash }}">{{.CommitHash}}</a> at {{.BuildTime}}</span>
         {{end}}
     </div>
 </main>
