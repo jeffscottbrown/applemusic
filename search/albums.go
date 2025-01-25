@@ -11,6 +11,7 @@ import (
 func Search(w http.ResponseWriter, r *http.Request) {
 	searchTerm := r.PathValue("term")
 	data, err := SearchApple(searchTerm)
+	w.Header().Add("Content-Type", "application/json")
 	if err == "" {
 		json.NewEncoder(w).Encode(data)
 	} else {
