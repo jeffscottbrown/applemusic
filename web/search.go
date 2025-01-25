@@ -19,14 +19,7 @@ func Search(w http.ResponseWriter, r *http.Request) {
 	bandName := r.FormValue("band_name")
 	results, errorMessage := search.SearchApple(bandName)
 
-	var requestScheme string
-	if r.TLS == nil {
-		requestScheme = "http://"
-	} else {
-		requestScheme = "https://"
-	}
-
-	jsonUrl := fmt.Sprintf("%s%s/search/%s", requestScheme, r.Host, url.QueryEscape(bandName))
+	jsonUrl := fmt.Sprintf("/search/%s", url.QueryEscape(bandName))
 
 	tmpl.Execute(w, struct {
 		Success    bool
