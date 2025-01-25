@@ -16,7 +16,6 @@ func Search(w http.ResponseWriter, r *http.Request) {
 		BuildTime: commit.BuildTime}
 
 	if r.Method != http.MethodPost {
-		searchModel.Success = false
 
 		tmpl.Execute(w, searchModel)
 		return
@@ -25,7 +24,6 @@ func Search(w http.ResponseWriter, r *http.Request) {
 	bandName := r.FormValue("band_name")
 	results, errorMessage := search.SearchApple(bandName)
 
-	searchModel.Success = true
 	searchModel.SearchTerm = bandName
 	searchModel.Error = errorMessage
 	searchModel.Results = results
@@ -41,5 +39,4 @@ type SearchModel struct {
 	JsonUrl    string
 	Results    model.SearchResult
 	SearchTerm string
-	Success    bool
 }
