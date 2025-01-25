@@ -64,6 +64,15 @@
     <form method="POST">
         <label>Search Term:</label><br/>
         <input type="text" placeholder="Enter Band Name" name="band_name"><br/>
+        <div class="max-results">
+            Maximum Number Of Results:
+            <input type="radio" id="limit10" name="limit" value="10">
+            <label for="limit10">10</label><br>
+            <input type="radio" id="limit15" name="limit" value="15">
+            <label for="limit15">15</label><br>
+            <input type="radio" id="limit25" name="limit" value="25">
+            <label for="limit25">25</label><br>
+        </div>
         <button>Search</button>
     </form>
     {{end}}

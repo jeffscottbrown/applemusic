@@ -78,3 +78,15 @@ tr:nth-of-type(even) {
     text-align: left;
     font-size: 80%;
 }
+
+.max-results {
+    display: flex;
+    margin-bottom: 1rem;
+}
+
+input[type='radio'] {
+    border: 1px solid var(--gray);
+    box-sizing: border-box;
+    margin-left: 20px;
+    margin-right: 5px;
+}

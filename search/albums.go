@@ -11,7 +11,7 @@ import (
 
 func Search(w http.ResponseWriter, r *http.Request) {
 	searchTerm := r.PathValue("term")
-	data, err := SearchApple(searchTerm)
+	data, err := SearchApple(searchTerm, "25")
 	w.Header().Add("Content-Type", "application/json")
 	if err == "" {
 		json.NewEncoder(w).Encode(data)
@@ -21,8 +21,8 @@ func Search(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func SearchApple(searchTerm string) (model.SearchResult, string) {
-	fullURL := createSearchUrl(searchTerm)
+func SearchApple(searchTerm string, limit string) (model.SearchResult, string) {
+	fullURL := createSearchUrl(searchTerm, limit)
 
 	slog.Debug("Querying Apple API", "url", fullURL)
 
@@ -42,17 +42,18 @@ func SearchApple(searchTerm string) (model.SearchResult, string) {
 	return result, errorMessage
 }
 
-func createSearchUrl(searchTerm string) string {
-	params := createRequestParameters(searchTerm)
+func createSearchUrl(searchTerm string, limit string) string {
+	params := createRequestParameters(searchTerm, limit)
 
 	fullURL := constants.AppleMusicAPI + "?" + params.Encode()
 	return fullURL
 }
 
-func createRequestParameters(searchTerm string) url.Values {
+func createRequestParameters(searchTerm string, limit string) url.Values {
 	params := url.Values{}
 	params.Add("term", searchTerm)
 	params.Add("media", "music")
 	params.Add("entity", "album")
+	params.Add("limit", limit)
 	return params
 }

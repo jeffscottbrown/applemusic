@@ -24,7 +24,8 @@ func Search(w http.ResponseWriter, r *http.Request) {
 	}
 
 	bandName := r.FormValue("band_name")
-	results, errorMessage := search.SearchApple(bandName)
+	limit := r.FormValue("limit")
+	results, errorMessage := search.SearchApple(bandName, limit)
 
 	searchModel.SearchTerm = bandName
 	searchModel.Error = errorMessage
