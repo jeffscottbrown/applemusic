@@ -10,32 +10,34 @@ import (
 
 func Search(w http.ResponseWriter, r *http.Request) {
 	searchTerm := r.PathValue("term")
-	data := SearchApple(searchTerm)
-	json.NewEncoder(w).Encode(data)
+	data, err := SearchApple(searchTerm)
+	if err == "" {
+		json.NewEncoder(w).Encode(data)
+	} else {
+		w.WriteHeader(http.StatusInternalServerError)
+		json.NewEncoder(w).Encode(map[string]string{"error": err})
+	}
 }
 
-func SearchApple(searchTerm string) map[string]interface{} {
+func SearchApple(searchTerm string) (model.SearchResult, string) {
 	fullURL := createSearchUrl(searchTerm)
 
 	slog.Debug("Querying Apple API", "url", fullURL)
 
 	resp, err := http.Get(fullURL)
 
-	data := make(map[string]interface{})
-
+	var errorMessage string
+	var result model.SearchResult
 	if err != nil {
-		data["error"] = "Failed to fetch data"
+		errorMessage = "Failed to fetch data"
 	} else {
 		defer resp.Body.Close()
 
-		var result model.SearchResult
 		if err := json.NewDecoder(resp.Body).Decode(&result); err != nil {
-			data["error"] = "Failed to parse JSON"
-		} else {
-			data["searchResults"] = result
+			errorMessage = "Failed to parse JSON"
 		}
 	}
-	return data
+	return result, errorMessage
 }
 
 func createSearchUrl(searchTerm string) string {

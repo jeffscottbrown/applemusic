@@ -15,12 +15,12 @@ func Search(w http.ResponseWriter, r *http.Request) {
 	}
 
 	bandName := r.FormValue("band_name")
-	results := search.SearchApple(bandName)
+	results, errorMessage := search.SearchApple(bandName)
 
 	tmpl.Execute(w, struct {
 		Success    bool
+		Error      string
 		Results    model.SearchResult
 		SearchTerm string
-	}{true, results["searchResults"].(model.SearchResult), bandName})
-
+	}{errorMessage == "", errorMessage, results, bandName})
 }
