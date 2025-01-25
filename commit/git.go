@@ -1,4 +1,5 @@
 package commit
 
-var Hash string
-var BuildTime string
+// These values may be overriden at build time using ldflags
+var Hash = "main"
+var BuildTime = "now"
