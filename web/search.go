@@ -12,40 +12,34 @@ import (
 
 func Search(w http.ResponseWriter, r *http.Request) {
 	tmpl := template.Must(template.ParseFiles("web/search.html"))
+	searchModel := SearchModel{CommitHash: commit.Hash,
+		BuildTime: commit.BuildTime}
+
 	if r.Method != http.MethodPost {
-		tmpl.Execute(w, struct {
-			CommitHash string
-			BuildTime  string
-			Error      bool
-			Success    bool
-		}{
-			commit.Hash,
-			commit.BuildTime,
-			false,
-			false,
-		})
+		searchModel.Success = false
+
+		tmpl.Execute(w, searchModel)
 		return
 	}
 
 	bandName := r.FormValue("band_name")
 	results, errorMessage := search.SearchApple(bandName)
 
-	jsonUrl := fmt.Sprintf("/search/%s", url.QueryEscape(bandName))
+	searchModel.Success = true
+	searchModel.SearchTerm = bandName
+	searchModel.Error = errorMessage
+	searchModel.Results = results
+	searchModel.JsonUrl = fmt.Sprintf("/search/%s", url.QueryEscape(bandName))
 
-	tmpl.Execute(w, struct {
-		Success    bool
-		Error      string
-		Results    model.SearchResult
-		SearchTerm string
-		JsonUrl    string
-		CommitHash string
-		BuildTime  string
-	}{errorMessage == "",
-		errorMessage,
-		results,
-		bandName,
-		jsonUrl,
-		commit.Hash,
-		commit.BuildTime,
-	})
+	tmpl.Execute(w, searchModel)
+}
+
+type SearchModel struct {
+	BuildTime  string
+	CommitHash string
+	Error      string
+	JsonUrl    string
+	Results    model.SearchResult
+	SearchTerm string
+	Success    bool
 }
