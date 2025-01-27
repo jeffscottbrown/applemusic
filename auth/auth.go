@@ -36,10 +36,18 @@ func authCallback(res http.ResponseWriter, req *http.Request) {
 	res.WriteHeader(http.StatusTemporaryRedirect)
 }
 
+func getCallbackUrl() string {
+	value, exists := os.LookupEnv("GOOGLE_CALLBACK_URL")
+	if !exists {
+		value = "http://localhost:8080/auth/google/callback"
+		slog.Warn("GOOGLE_CALLBACK_URL not set, using default", "value", value)
+	}
+	return value
+}
 func Configure() {
 	slog.Debug("Configuring authentication providers")
 	goth.UseProviders(
-		google.New(os.Getenv("GOOGLE_ID"), os.Getenv("GOOGLE_SECRET"), "http://localhost:8080/auth/google/callback", "profile"),
+		google.New(os.Getenv("GOOGLE_ID"), os.Getenv("GOOGLE_SECRET"), getCallbackUrl(), "profile"),
 	)
 }
 
