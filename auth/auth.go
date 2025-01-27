@@ -20,6 +20,9 @@ func logout(res http.ResponseWriter, req *http.Request) {
 }
 
 var store = sessions.NewCookieStore([]byte(os.Getenv("SESSION_KEY")))
+var callbackUrl = getCallbackUrl()
+var googleSecret = os.Getenv("GOOGLE_SECRET")
+var googleId = os.Getenv("GOOGLE_ID")
 
 func authCallback(res http.ResponseWriter, req *http.Request) {
 	user, err := gothic.CompleteUserAuth(res, req)
@@ -44,10 +47,11 @@ func getCallbackUrl() string {
 	}
 	return value
 }
+
 func Configure() {
 	slog.Debug("Configuring authentication providers")
 	goth.UseProviders(
-		google.New(os.Getenv("GOOGLE_ID"), os.Getenv("GOOGLE_SECRET"), getCallbackUrl(), "profile"),
+		google.New(googleId, googleSecret, callbackUrl, "profile"),
 	)
 }
 
