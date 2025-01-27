@@ -1,4 +1,13 @@
-## Running The App
+# Golang Apple Music Search
+
+## Overview
+
+This is a small playground app written in Golang that uses the Apple Music API.
+
+An instance of the application is generally running at 
+https://godemo.jeffandbetsy.net right now.
+
+## Running The App Locally
 
 The project requires 3 OS environment variables to be set.
 
