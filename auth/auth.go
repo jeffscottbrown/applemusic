@@ -1,7 +1,6 @@
 package auth
 
 import (
-	"fmt"
 	"github.com/gorilla/pat"
 	"github.com/gorilla/sessions"
 	"github.com/markbates/goth"
@@ -27,7 +26,7 @@ var googleId = os.Getenv("GOOGLE_ID")
 func authCallback(res http.ResponseWriter, req *http.Request) {
 	user, err := gothic.CompleteUserAuth(res, req)
 	if err != nil {
-		fmt.Fprintln(res, err)
+		slog.Error("Error authenticating user", "error", err)
 		return
 	}
 
