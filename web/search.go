@@ -6,6 +6,7 @@ import (
 	"github.com/jeffscottbrown/applemusic/constants"
 	"github.com/jeffscottbrown/applemusic/model"
 	"github.com/jeffscottbrown/applemusic/search"
+	"github.com/markbates/goth/gothic"
 	"html/template"
 	"net/http"
 	"net/url"
@@ -13,9 +14,7 @@ import (
 
 func Search(w http.ResponseWriter, r *http.Request) {
 	tmpl := template.Must(template.ParseFiles("web/search.html"))
-	searchModel := SearchModel{CommitHash: commit.Hash,
-		BuildTime:  commit.BuildTime,
-		GitHubRepo: constants.GitHubRepo}
+	searchModel := createModel(r)
 
 	if r.Method != http.MethodPost {
 
@@ -35,12 +34,23 @@ func Search(w http.ResponseWriter, r *http.Request) {
 	tmpl.Execute(w, searchModel)
 }
 
+func createModel(r *http.Request) SearchModel {
+	searchModel := SearchModel{CommitHash: commit.Hash,
+		BuildTime:  commit.BuildTime,
+		GitHubRepo: constants.GitHubRepo}
+
+	authenticatedUserName, _ := gothic.GetFromSession("authenticatedUser", r)
+	searchModel.AuthenticatedUserName = authenticatedUserName
+	return searchModel
+}
+
 type SearchModel struct {
-	BuildTime  string
-	CommitHash string
-	Error      string
-	JsonUrl    string
-	Results    model.SearchResult
-	SearchTerm string
-	GitHubRepo string
+	BuildTime             string
+	CommitHash            string
+	Error                 string
+	JsonUrl               string
+	Results               model.SearchResult
+	SearchTerm            string
+	GitHubRepo            string
+	AuthenticatedUserName string
 }

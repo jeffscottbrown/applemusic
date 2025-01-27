@@ -14,15 +14,24 @@
                 <li class="nav-item active">
                     <a class="nav-link" href="/">Home</a>
                 </li>
+                <li class="nav-item active">
+                    {{if .AuthenticatedUserName}}
+                    <a class="nav-link" href="/logout/google">Logout</a>
+                    {{else}}
+                    <a class="nav-link" href="/auth/google/login">Login</a>
+                    {{end}}
+                </li>
             </ul>
         </div>
     </nav>
-
     {{if .Error}}
     <div class="alert alert-danger" role="alert">
         {{.Error}}
     </div>
     {{end}}
+
+    {{if .AuthenticatedUserName}}
+    <div><h5>Wecome {{.AuthenticatedUserName}}!</h5></div>
 
     {{if .Results.Albums}}
     <div class="alert alert-info" role="alert">
@@ -55,7 +64,7 @@
     </table>
 
     {{else}}
-    <h1>Music Search</h1>
+    <h2>Music Search</h2>
     <form method="POST">
         <label>Search Term:</label><br/>
         <input type="text" placeholder="Enter Band Name" name="band_name"><br/>
@@ -71,6 +80,8 @@
         <button>Search</button>
     </form>
     {{end}}
+    {{end}}
+
     <div class="footer">
         {{if .CommitHash}}
         <span>Built from commit <a href="{{printf "%s/tree/%s" .GitHubRepo .CommitHash }}">{{.CommitHash}}</a> at {{.BuildTime}}</span>

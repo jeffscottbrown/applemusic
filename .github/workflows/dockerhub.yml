@@ -32,5 +32,8 @@ jobs:
         uses: docker/build-push-action@v6
         with:
           push: true
-          build-args: GIT_COMMIT=${{env.GIT_COMMIT}}
+          build-args: |
+            GIT_COMMIT=${{env.GIT_COMMIT}}
+            GOOGLE_ID=${{env.GOOGLE_ID}}
+            GOOGLE_SECRET=${{env.GOOGLE_SECRET}}
           tags: ${{ secrets.DOCKER_USERNAME }}/${{ github.event.repository.name }}:latest,${{ secrets.DOCKER_USERNAME }}/${{ github.event.repository.name }}:${{env.DOCKER_IMAGE_VERSION}}

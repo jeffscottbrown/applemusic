@@ -10,7 +10,7 @@ import (
 )
 
 func Search(w http.ResponseWriter, r *http.Request) {
-	searchTerm := r.PathValue("term")
+	searchTerm := r.URL.Query().Get(":term")
 	data, err := SearchApple(searchTerm, "25")
 	w.Header().Add("Content-Type", "application/json")
 	if err == "" {
