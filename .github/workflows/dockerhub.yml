@@ -34,5 +34,5 @@ jobs:
           push: true
           build-args: |
             GIT_COMMIT=${{env.GIT_COMMIT}}
-            PROJECT_ID:${{secrets.PROJECT_ID}}
+            PROJECT_ID=${{secrets.PROJECT_ID}}
           tags: ${{ secrets.DOCKER_USERNAME }}/${{ github.event.repository.name }}:latest,${{ secrets.DOCKER_USERNAME }}/${{ github.event.repository.name }}:${{env.DOCKER_IMAGE_VERSION}}
