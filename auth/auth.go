@@ -41,8 +41,6 @@ func Configure() {
 
 	googleId, googleSecret, callbackUrl := oauthConfig()
 
-	slog.Debug("Credential Info", "gid", googleId, "gse", googleSecret, "cbu", callbackUrl)
-
 	goth.UseProviders(
 		google.New(googleId, googleSecret, callbackUrl, "profile"),
 	)

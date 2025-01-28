@@ -11,6 +11,8 @@ import (
 var projectId string
 
 func RetrieveSecret(secretName string) (string, error) {
+	slog.Debug("Retrieving Secret For Project", "projectId", projectId)
+
 	secretValue, err := accessSecret(secretName)
 	if err != nil {
 		slog.Error("Error retrieving client secret", "secretName", secretName, "error", err)
