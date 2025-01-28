@@ -11,14 +11,6 @@ import (
 var projectId string
 
 func RetrieveSecret(secretName string) (string, error) {
-	secretValue, err := accessSecret(secretName)
-	if err != nil {
-		slog.Error("Error retrieving client secret", "secretName", secretName, "error", err)
-	}
-	return secretValue, err
-}
-
-func accessSecret(secretName string) (string, error) {
 	ctx := context.Background()
 
 	client, err := secretmanager.NewClient(ctx)
@@ -34,6 +26,7 @@ func accessSecret(secretName string) (string, error) {
 	}
 	result, err := client.AccessSecretVersion(ctx, req)
 	if err != nil {
+		slog.Error("Error retrieving client secret", "secretName", secretName, "error", err)
 		return "", fmt.Errorf("failed to access secret version: %w", err)
 	}
 
