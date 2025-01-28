@@ -35,6 +35,10 @@ That will serve the browswer interface at http://localhost:8080 and
 will serve a JSON API at `http://localhost:8080/search/[band name goes here]`,
 for example http://localhost:8080/search/Phish.
 
+Alternatively the application may be run in a Docker container.  
 
-
-
+docker run -p 8080:8080 \
+    -e GOOGLE_SECRET=$GOOGLE_SECRET \
+    -e GOOGLE_ID=$GOOGLE_ID \
+    -e GOOGLE_CALLBACK_URL=$GOOGLE_CALLBACK_URL \
+    -p 8080:8080 docker.io/jeffscottbrown/applemusic:latest
