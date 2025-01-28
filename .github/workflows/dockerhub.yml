@@ -34,7 +34,5 @@ jobs:
           push: true
           build-args: |
             GIT_COMMIT=${{env.GIT_COMMIT}}
-            GOOGLE_ID=${{secrets.GOOGLE_ID}}
-            GOOGLE_SECRET=${{secrets.GOOGLE_SECRET}}
-            GOOGLE_CALLBACK_URL=${{secrets.GOOGLE_CALLBACK_URL}}
+            PROJECT_ID:${{secrets.PROJECT_ID}}
           tags: ${{ secrets.DOCKER_USERNAME }}/${{ github.event.repository.name }}:latest,${{ secrets.DOCKER_USERNAME }}/${{ github.event.repository.name }}:${{env.DOCKER_IMAGE_VERSION}}

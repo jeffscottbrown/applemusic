@@ -3,6 +3,7 @@ package auth
 import (
 	"github.com/gorilla/pat"
 	"github.com/gorilla/sessions"
+	"github.com/jeffscottbrown/applemusic/secrets"
 	"github.com/markbates/goth"
 	"github.com/markbates/goth/gothic"
 	"github.com/markbates/goth/providers/google"
@@ -19,9 +20,6 @@ func logout(res http.ResponseWriter, req *http.Request) {
 }
 
 var store = sessions.NewCookieStore([]byte(os.Getenv("SESSION_KEY")))
-var callbackUrl = getCallbackUrl()
-var googleSecret = os.Getenv("GOOGLE_SECRET")
-var googleId = os.Getenv("GOOGLE_ID")
 
 func authCallback(res http.ResponseWriter, req *http.Request) {
 	user, err := gothic.CompleteUserAuth(res, req)
@@ -38,20 +36,30 @@ func authCallback(res http.ResponseWriter, req *http.Request) {
 	res.WriteHeader(http.StatusTemporaryRedirect)
 }
 
-func getCallbackUrl() string {
-	value, exists := os.LookupEnv("GOOGLE_CALLBACK_URL")
-	if !exists {
-		value = "http://localhost:8080/auth/google/callback"
-		slog.Warn("GOOGLE_CALLBACK_URL not set, using default", "value", value)
-	}
-	return value
-}
-
 func Configure() {
 	slog.Debug("Configuring authentication providers")
+
+	googleId, googleSecret, callbackUrl := oauthConfig()
+
 	goth.UseProviders(
 		google.New(googleId, googleSecret, callbackUrl, "profile"),
 	)
+}
+
+func oauthConfig() (string, string, string) {
+	googleSecret := retrieveSecreatValue("GOOGLE_SECRET")
+	callbackUrl := retrieveSecreatValue("GOOGLE_CALLBACK_URL")
+	googleId := retrieveSecreatValue("GOOGLE_ID")
+	return googleId, googleSecret, callbackUrl
+}
+
+func retrieveSecreatValue(secretName string) string {
+	clientSecret, err := secrets.RetrieveSecret(secretName)
+	if err != nil {
+		slog.Error("Falling back to OS environment variable", "variable", secretName)
+		clientSecret = os.Getenv(secretName)
+	}
+	return clientSecret
 }
 
 func ConfigureAuthorizationHandlers(router *pat.Router) {
