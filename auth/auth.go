@@ -12,6 +12,15 @@ import (
 	"os"
 )
 
+func login(res http.ResponseWriter, req *http.Request) {
+	if _, err := gothic.CompleteUserAuth(res, req); err == nil {
+		res.Header().Set("Location", "/")
+		res.WriteHeader(http.StatusTemporaryRedirect)
+	} else {
+		gothic.BeginAuthHandler(res, req)
+	}
+}
+
 func logout(res http.ResponseWriter, req *http.Request) {
 	gothic.Logout(res, req)
 	slog.Info("User logged out")
@@ -68,15 +77,7 @@ func retrieveSecretValue(secretName string) string {
 func ConfigureAuthorizationHandlers(router *http.ServeMux) {
 	router.HandleFunc("/auth/{provider}/callback", providerAwareHandler(authCallback))
 	router.HandleFunc("/logout/{provider}", providerAwareHandler(logout))
-
-	router.HandleFunc("/auth/{provider}", providerAwareHandler(func(res http.ResponseWriter, req *http.Request) {
-		if _, err := gothic.CompleteUserAuth(res, req); err == nil {
-			res.Header().Set("Location", "/")
-			res.WriteHeader(http.StatusTemporaryRedirect)
-		} else {
-			gothic.BeginAuthHandler(res, req)
-		}
-	}))
+	router.HandleFunc("/auth/{provider}", providerAwareHandler(login))
 }
 
 // gothic tries a number of techniques to retrieve the provider
