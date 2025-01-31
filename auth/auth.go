@@ -47,13 +47,13 @@ func Configure() {
 }
 
 func oauthConfig() (string, string, string) {
-	googleSecret := retrieveSecreatValue("GOOGLE_SECRET")
-	callbackUrl := retrieveSecreatValue("GOOGLE_CALLBACK_URL")
-	googleId := retrieveSecreatValue("GOOGLE_ID")
+	googleSecret := retrieveSecretValue("GOOGLE_SECRET")
+	callbackUrl := retrieveSecretValue("GOOGLE_CALLBACK_URL")
+	googleId := retrieveSecretValue("GOOGLE_ID")
 	return googleId, googleSecret, callbackUrl
 }
 
-func retrieveSecreatValue(secretName string) string {
+func retrieveSecretValue(secretName string) string {
 	clientSecret, err := secrets.RetrieveSecret(secretName)
 	if err != nil {
 		slog.Error("Falling back to OS environment variable", "variable", secretName)
