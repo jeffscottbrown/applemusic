@@ -74,9 +74,4 @@ func ConfigureAuthorizationHandlers(router *pat.Router) {
 			gothic.BeginAuthHandler(res, req)
 		}
 	})
-	router.Get("/logout/{provider}", func(res http.ResponseWriter, req *http.Request) {
-		gothic.Logout(res, req)
-		res.Header().Set("Location", "/")
-		res.WriteHeader(http.StatusTemporaryRedirect)
-	})
 }
