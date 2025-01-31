@@ -23,7 +23,7 @@ OAuth2 where to call back into your application after authentication.  If you
 do not set this value, a default value of
 `http://localhost:8080/auth/google/callback` will be used.  The value must
 end with `/auth/google/callback` and you may change the host name and/or the
-port number. Note that this URL must be configured as authorized redirect URIs 
+port number. Note that this URL must be configured as an authorized redirect URI 
 when configuring the credentials in the Google API console.
 
 With those environment variables set, the application should be ready to run.
