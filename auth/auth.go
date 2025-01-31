@@ -1,7 +1,7 @@
 package auth
 
 import (
-	"github.com/gorilla/pat"
+	"context"
 	"github.com/gorilla/sessions"
 	"github.com/jeffscottbrown/applemusic/secrets"
 	"github.com/markbates/goth"
@@ -65,16 +65,30 @@ func retrieveSecretValue(secretName string) string {
 	return clientSecret
 }
 
-func ConfigureAuthorizationHandlers(router *pat.Router) {
-	router.Get("/auth/{provider}/callback", authCallback)
-	router.Get("/logout/{provider}", logout)
+func ConfigureAuthorizationHandlers(router *http.ServeMux) {
+	router.HandleFunc("/auth/{provider}/callback", providerAwareHandler(authCallback))
+	router.HandleFunc("/logout/{provider}", providerAwareHandler(logout))
 
-	router.Get("/auth/{provider}", func(res http.ResponseWriter, req *http.Request) {
+	router.HandleFunc("/auth/{provider}", providerAwareHandler(func(res http.ResponseWriter, req *http.Request) {
 		if _, err := gothic.CompleteUserAuth(res, req); err == nil {
 			res.Header().Set("Location", "/")
 			res.WriteHeader(http.StatusTemporaryRedirect)
 		} else {
 			gothic.BeginAuthHandler(res, req)
 		}
-	})
+	}))
+}
+
+// gothic tries a number of techniques to retrieve the provider
+// from the URL but it does not use PathValue, which is how
+// the standard library provides access to the value
+// see https://github.com/markbates/goth/blob/260588e82ba14930ae070a80acadcf0f75348c05/gothic/gothic.go#L263
+// this wrapper will add the provider to the context in a way that gothic can use
+func providerAwareHandler(h http.HandlerFunc) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		provider := r.PathValue("provider")
+		r = r.WithContext(context.WithValue(context.Background(), "provider", provider))
+
+		h(w, r)
+	}
 }

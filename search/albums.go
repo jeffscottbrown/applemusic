@@ -15,7 +15,7 @@ import (
 var searchCache = cache.New(5*time.Minute, 10*time.Minute)
 
 func Search(w http.ResponseWriter, r *http.Request) {
-	searchTerm := r.URL.Query().Get(":term")
+	searchTerm := r.PathValue("term")
 	data, err := SearchApple(searchTerm, "25")
 	w.Header().Add("Content-Type", "application/json")
 	if err == "" {

@@ -1,7 +1,6 @@
 package server
 
 import (
-	"github.com/gorilla/pat"
 	"github.com/jeffscottbrown/applemusic/auth"
 	"github.com/jeffscottbrown/applemusic/search"
 	"github.com/jeffscottbrown/applemusic/web"
@@ -18,8 +17,8 @@ func Run() {
 	server.ListenAndServe()
 }
 
-func createAndConfigureRouter() *pat.Router {
-	router := pat.New()
+func createAndConfigureRouter() *http.ServeMux {
+	router := http.NewServeMux()
 
 	configureApplicationHandlers(router)
 	configureStaticResourceHandler(router)
@@ -29,14 +28,14 @@ func createAndConfigureRouter() *pat.Router {
 	return router
 }
 
-func configureApplicationHandlers(router *pat.Router) {
-	router.Get("/search/{term}", search.Search)
+func configureApplicationHandlers(router *http.ServeMux) {
+	router.HandleFunc("/search/{term}", search.Search)
 	router.HandleFunc("/", web.Search)
 }
 
-func configureStaticResourceHandler(router *pat.Router) {
+func configureStaticResourceHandler(router *http.ServeMux) {
 	dir := http.Dir("./assets/")
 	fileServer := http.FileServer(dir)
 	foo := http.StripPrefix("/static/", fileServer)
-	router.Handle("/static/{filepath:.*}", foo)
+	router.Handle("/static/", foo)
 }

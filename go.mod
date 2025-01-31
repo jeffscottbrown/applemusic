@@ -4,7 +4,6 @@ go 1.23.4
 
 require (
 	cloud.google.com/go/secretmanager v1.10.0
-	github.com/gorilla/pat v1.0.2
 	github.com/gorilla/sessions v1.4.0
 	github.com/markbates/goth v1.80.0
 	github.com/patrickmn/go-cache v2.1.0+incompatible
@@ -21,7 +20,6 @@ require (
 	github.com/google/s2a-go v0.1.4 // indirect
 	github.com/googleapis/enterprise-certificate-proxy v0.2.3 // indirect
 	github.com/googleapis/gax-go/v2 v2.11.0 // indirect
-	github.com/gorilla/context v1.1.2 // indirect
 	github.com/gorilla/mux v1.8.1 // indirect
 	github.com/gorilla/securecookie v1.1.2 // indirect
 	go.opencensus.io v0.24.0 // indirect
