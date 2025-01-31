@@ -49,6 +49,9 @@ func Configure() {
 func oauthConfig() (string, string, string) {
 	googleSecret := retrieveSecretValue("GOOGLE_SECRET")
 	callbackUrl := retrieveSecretValue("GOOGLE_CALLBACK_URL")
+	if callbackUrl == "" {
+		callbackUrl = "http://localhost:8080/auth/google/callback"
+	}
 	googleId := retrieveSecretValue("GOOGLE_ID")
 	return googleId, googleSecret, callbackUrl
 }
