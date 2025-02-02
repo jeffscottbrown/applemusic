@@ -6,11 +6,16 @@ import (
 	"fmt"
 	secretspb "google.golang.org/genproto/googleapis/cloud/secretmanager/v1"
 	"log/slog"
+	"os"
 )
 
-var projectId string
+var projectId = os.Getenv("PROJECT_ID")
 
 func RetrieveSecret(secretName string) (string, error) {
+	if projectId == "" {
+		slog.Error("PROJECT_ID environment variable not set")
+		return "", fmt.Errorf("PROJECT_ID environment variable not set")
+	}
 	ctx := context.Background()
 
 	client, err := secretmanager.NewClient(ctx)
