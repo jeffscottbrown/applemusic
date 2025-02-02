@@ -13,7 +13,7 @@ import (
 )
 
 func Search(w http.ResponseWriter, r *http.Request) {
-	tmpl := template.Must(template.ParseFiles("web/search.html"))
+	tmpl := template.Must(template.ParseFiles("web/templates/search.html"))
 	searchModel := createModel(r)
 
 	if r.Method != http.MethodPost {

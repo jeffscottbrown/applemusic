@@ -34,7 +34,7 @@ func configureApplicationHandlers(router *http.ServeMux) {
 }
 
 func configureStaticResourceHandler(router *http.ServeMux) {
-	dir := http.Dir("./assets/")
+	dir := http.Dir("./web/assets/")
 	fileServer := http.FileServer(dir)
 	foo := http.StripPrefix("/static/", fileServer)
 	router.Handle("/static/", foo)
