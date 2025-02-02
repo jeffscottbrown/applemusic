@@ -11,14 +11,11 @@ https://godemo.jeffandbetsy.net right now.
 
 The project requires 3 OS environment variables to be set.
 
-SESSION_SECRET - used internally by Gothic to manage session data. The value
-should be random and at least 32 bytes.
+`GOOGLE_ID` - Client id from Google OAuth2 API credentials.
 
-GOOGLE_ID - Client id from Google OAuth2 API credentials.
+`GOOGLE_SECRET` - Client secret from Google OAuth2 API credentials.
 
-GOOGLE_SECRET - Client secret from Google OAuth2 API credentials.
-
-Optionally you can set GOOGLE_CALLBACK_URL which will be used to tell Google
+Optionally you can set `GOOGLE_CALLBACK_URL` which will be used to tell Google
 OAuth2 where to call back into your application after authentication.  If you
 do not set this value, a default value of
 `http://localhost:8080/auth/google/callback` will be used.  The value must
@@ -37,8 +34,10 @@ for example http://localhost:8080/search/Phish.
 
 Alternatively the application may be run in a Docker container.  
 
+```bash
 docker run -p 8080:8080 \
     -e GOOGLE_SECRET=$GOOGLE_SECRET \
     -e GOOGLE_ID=$GOOGLE_ID \
     -e GOOGLE_CALLBACK_URL=$GOOGLE_CALLBACK_URL \
     -p 8080:8080 docker.io/jeffscottbrown/applemusic:latest
+```
