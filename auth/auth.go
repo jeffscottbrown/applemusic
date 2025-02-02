@@ -2,6 +2,7 @@ package auth
 
 import (
 	"context"
+	"github.com/google/uuid"
 	"github.com/gorilla/sessions"
 	"github.com/jeffscottbrown/applemusic/secrets"
 	"github.com/markbates/goth"
@@ -28,8 +29,6 @@ func logout(res http.ResponseWriter, req *http.Request) {
 	res.WriteHeader(http.StatusTemporaryRedirect)
 }
 
-var store = sessions.NewCookieStore([]byte(os.Getenv("SESSION_KEY")))
-
 func authCallback(res http.ResponseWriter, req *http.Request) {
 	user, err := gothic.CompleteUserAuth(res, req)
 	if err != nil {
@@ -46,6 +45,7 @@ func authCallback(res http.ResponseWriter, req *http.Request) {
 }
 
 func Configure() {
+	gothic.Store = sessions.NewCookieStore([]byte(uuid.NewString()))
 	slog.Debug("Configuring authentication providers")
 
 	googleId, googleSecret, callbackUrl := oauthConfig()

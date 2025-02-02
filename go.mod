@@ -4,6 +4,7 @@ go 1.23.4
 
 require (
 	cloud.google.com/go/secretmanager v1.10.0
+	github.com/google/uuid v1.6.0
 	github.com/gorilla/sessions v1.4.0
 	github.com/markbates/goth v1.80.0
 	github.com/patrickmn/go-cache v2.1.0+incompatible

@@ -2,7 +2,6 @@ FROM golang:1.23 AS appbuilder
 
 ARG GIT_COMMIT
 ARG PROJECT_ID
-ENV SESSION_SECRET=`uuidgen`
 
 WORKDIR /build
 
