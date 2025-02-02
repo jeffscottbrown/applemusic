@@ -1,10 +1,10 @@
-FROM golang:1.23
+FROM golang:1.23 AS appbuilder
 
 ARG GIT_COMMIT
 ARG PROJECT_ID
 ENV SESSION_SECRET=`uuidgen`
 
-WORKDIR /app
+WORKDIR /build
 
 COPY go.mod ./
 
@@ -12,6 +12,9 @@ RUN go mod download
 
 COPY . .
 
-RUN go build -ldflags "-X github.com/jeffscottbrown/applemusic/secrets.projectId=$PROJECT_ID -X github.com/jeffscottbrown/applemusic/commit.Hash=$GIT_COMMIT -X github.com/jeffscottbrown/applemusic/commit.BuildTime=$(date -u +'%Y-%m-%dT%H:%M:%SZ')" -o app .
+RUN CGO_ENABLED=0 go build -ldflags "-X github.com/jeffscottbrown/applemusic/secrets.projectId=$PROJECT_ID -X github.com/jeffscottbrown/applemusic/commit.Hash=$GIT_COMMIT -X github.com/jeffscottbrown/applemusic/commit.BuildTime=$(date -u +'%Y-%m-%dT%H:%M:%SZ')" -o musicsearch .
 
-CMD ["./app"]
+FROM scratch
+WORKDIR /app
+COPY --from=appbuilder /build/musicsearch .
+CMD ["./musicsearch"]
