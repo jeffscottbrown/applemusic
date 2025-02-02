@@ -2,9 +2,9 @@ package secrets
 
 import (
 	secretmanager "cloud.google.com/go/secretmanager/apiv1"
+	secretspb "cloud.google.com/go/secretmanager/apiv1/secretmanagerpb"
 	"context"
 	"fmt"
-	secretspb "google.golang.org/genproto/googleapis/cloud/secretmanager/v1"
 	"log/slog"
 	"os"
 )
