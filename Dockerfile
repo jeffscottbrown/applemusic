@@ -1,4 +1,4 @@
-FROM golang:1.23 AS appbuilder
+FROM golang:1.23-alpine AS appbuilder
 
 ARG GIT_COMMIT
 ARG PROJECT_ID
