@@ -14,18 +14,6 @@ import (
 
 var searchCache = cache.New(5*time.Minute, 10*time.Minute)
 
-func Search(w http.ResponseWriter, r *http.Request) {
-	searchTerm := r.PathValue("term")
-	data, err := SearchApple(searchTerm, "25")
-	w.Header().Add("Content-Type", "application/json")
-	if err == "" {
-		json.NewEncoder(w).Encode(data)
-	} else {
-		w.WriteHeader(http.StatusInternalServerError)
-		json.NewEncoder(w).Encode(map[string]string{"error": err})
-	}
-}
-
 func SearchApple(searchTerm string, limit string) (model.SearchResult, string) {
 	cachKey := fmt.Sprintf("%s-%s", searchTerm, limit)
 	if cachedData, found := searchCache.Get(cachKey); found {

@@ -1,3 +1,4 @@
 .idea/
 tmp/
 .vscode/tasks.json
+templates/*_templ.go

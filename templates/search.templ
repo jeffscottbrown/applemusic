@@ -1,0 +1,49 @@
+package templates
+
+import "github.com/jeffscottbrown/applemusic/model"
+
+templ searchForm() {
+	<h2>Music Search</h2>
+	<div>
+		<label>Search Term:</label>
+		<br/>
+		<input type="text" placeholder="Enter Band Name" name="band_name"/>
+		<br/>
+		<div class="max-results">
+			Maximum Number Of Results:
+			<input type="radio" id="limit10" name="limit" value="10" checked/>
+			<label for="limit10">10</label>
+			<br/>
+			<input type="radio" id="limit15" name="limit" value="15"/>
+			<label for="limit15">15</label>
+			<br/>
+			<input type="radio" id="limit25" name="limit" value="25"/>
+			<label for="limit25">25</label>
+			<br/>
+		</div>
+		<button hx-include="closest div" class="btn btn-primary" hx-post="/search" hx-target="#results">Search</button>
+	</div>
+	<div id="results"></div>
+}
+
+templ Results(results model.SearchResult) {
+	<table class="table-striped">
+		<tr>
+			<th>Artist Name</th>
+			<th>Album Title</th>
+		</tr>
+		<tbody>
+			for _, result := range results.Albums {
+				<tr>
+					<td>{ result.ArtistName }</td>
+					<td>
+						<a
+							href={ templ.URL(result.Url) }
+							target="_blank"
+						>{ result.AlbumTitle }</a>
+					</td>
+				</tr>
+			}
+		</tbody>
+	</table>
+}

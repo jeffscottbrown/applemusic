@@ -1,0 +1,66 @@
+package templates
+
+import (
+	"fmt"
+	"github.com/jeffscottbrown/applemusic/auth"
+	"github.com/jeffscottbrown/applemusic/commit"
+	"github.com/jeffscottbrown/applemusic/constants"
+	"net/http"
+)
+
+templ Home(r *http.Request) {
+	<!DOCTYPE html>
+	<html>
+		@head()
+		<body>
+			<main>
+				@nav(r)
+				if auth.IsAuthenticated(r) == true {
+					@searchForm()
+				}
+				@footer()
+			</main>
+		</body>
+	</html>
+}
+
+
+templ footer() {
+	<footer class="footer bg-light text-center text-lg-start">
+		<div class="container p-4">
+			<div class="text-center p-3">
+				<span>Built from commit <a href={ templ.URL(fmt.Sprintf("%s/tree/%s", constants.GitHubRepo, commit.Hash)) }>{ commit.Hash }</a> at { commit.BuildTime }</span>
+			</div>
+		</div>
+	</footer>
+}
+
+templ nav(r *http.Request) {
+	<nav class="navbar navbar-expand-lg navbar-light bg-light">
+		<div class="collapse navbar-collapse" id="navbarSupportedContent">
+			<ul class="navbar-nav mr-auto">
+				<li class="nav-item active">
+					<a class="nav-link" href="/">Home</a>
+				</li>
+				<li class="nav-item active">
+					if auth.IsAuthenticated(r) == true {
+						<a class="nav-link" href="/logout/google">Logout</a>
+					} else {
+						<a class="nav-link" href="/auth/google">Login</a>
+					}
+				</li>
+			</ul>
+		</div>
+	</nav>
+}
+
+templ head() {
+	<head>
+		<meta charset="utf-8"/>
+		<meta name="viewport" content="width=device-width, initial-scale=1"/>
+		<title>Music Search</title>
+		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"/>
+        <script src="https://unpkg.com/htmx.org@1.6.1"></script>
+		<link rel="stylesheet" href="/static/css/styles.css"/>
+	</head>
+}

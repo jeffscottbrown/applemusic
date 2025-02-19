@@ -2,15 +2,16 @@ package auth
 
 import (
 	"context"
+	"log/slog"
+	"net/http"
+	"os"
+
 	"github.com/google/uuid"
 	"github.com/gorilla/sessions"
 	"github.com/jeffscottbrown/applemusic/secrets"
 	"github.com/markbates/goth"
 	"github.com/markbates/goth/gothic"
 	"github.com/markbates/goth/providers/google"
-	"log/slog"
-	"net/http"
-	"os"
 )
 
 func login(res http.ResponseWriter, req *http.Request) {
@@ -44,6 +45,11 @@ func authCallback(res http.ResponseWriter, req *http.Request) {
 	res.WriteHeader(http.StatusTemporaryRedirect)
 }
 
+func IsAuthenticated(req *http.Request) bool {
+	_, err := gothic.GetFromSession("authenticatedUser", req)
+	return err == nil
+}
+
 func Configure() {
 	gothic.Store = sessions.NewCookieStore([]byte(uuid.NewString()))
 	slog.Debug("Configuring authentication providers")
@@ -75,9 +81,9 @@ func retrieveSecretValue(secretName string) string {
 }
 
 func ConfigureAuthorizationHandlers(router *http.ServeMux) {
-	router.HandleFunc("/auth/{provider}/callback", providerAwareHandler(authCallback))
-	router.HandleFunc("/logout/{provider}", providerAwareHandler(logout))
-	router.HandleFunc("/auth/{provider}", providerAwareHandler(login))
+	router.HandleFunc("GET /auth/{provider}/callback", providerAwareHandler(authCallback))
+	router.HandleFunc("GET /logout/{provider}", providerAwareHandler(logout))
+	router.HandleFunc("GET /auth/{provider}", providerAwareHandler(login))
 }
 
 // gothic tries a number of techniques to retrieve the provider
