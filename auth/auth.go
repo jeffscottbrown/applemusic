@@ -50,7 +50,7 @@ func IsAuthenticated(req *http.Request) bool {
 	return err == nil
 }
 
-func Configure() {
+func init() {
 	gothic.Store = sessions.NewCookieStore([]byte(uuid.NewString()))
 	slog.Debug("Configuring authentication providers")
 
@@ -91,6 +91,7 @@ func ConfigureAuthorizationHandlers(router *http.ServeMux) {
 // the standard library provides access to the value
 // see https://github.com/markbates/goth/blob/260588e82ba14930ae070a80acadcf0f75348c05/gothic/gothic.go#L263
 // this wrapper will add the provider to the context in a way that gothic can use
+
 func providerAwareHandler(h http.HandlerFunc) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		provider := r.PathValue("provider")
