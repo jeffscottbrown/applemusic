@@ -1,10 +1,10 @@
-FROM golang:1.23-alpine AS appbuilder
+FROM golang:1.24-alpine AS appbuilder
 
 ARG GIT_COMMIT
 
 WORKDIR /build
 
-COPY go.mod ./
+COPY go.mod go.sum ./
 
 RUN go mod download
 
@@ -19,6 +19,5 @@ ENV PROJECT_ID=$PROJECT_ID
 
 WORKDIR /app
 COPY --from=appbuilder /build/musicsearch .
-COPY --from=appbuilder /build/web/templates/ ./web/templates/
 COPY --from=appbuilder /build/web/assets/ ./web/assets/
 CMD ["./musicsearch"]
