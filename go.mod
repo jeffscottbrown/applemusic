@@ -26,6 +26,7 @@ require (
 	github.com/gorilla/context v1.1.1 // indirect
 	github.com/gorilla/mux v1.6.2 // indirect
 	github.com/gorilla/securecookie v1.1.2 // indirect
+	github.com/jeffscottbrown/goapple v0.2.0 // indirect
 	go.opentelemetry.io/auto/sdk v1.1.0 // indirect
 	go.opentelemetry.io/contrib/instrumentation/google.golang.org/grpc/otelgrpc v0.58.0 // indirect
 	go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp v0.58.0 // indirect

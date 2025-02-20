@@ -47,6 +47,10 @@ github.com/gorilla/securecookie v1.1.2 h1:YCIWL56dvtr73r6715mJs5ZvhtnY73hBvEF8kX
 github.com/gorilla/securecookie v1.1.2/go.mod h1:NfCASbcHqRSY+3a8tlWJwsQap2VX5pwzwo4h3eOamfo=
 github.com/gorilla/sessions v1.4.0 h1:kpIYOp/oi6MG/p5PgxApU8srsSw9tuFbt46Lt7auzqQ=
 github.com/gorilla/sessions v1.4.0/go.mod h1:FLWm50oby91+hl7p/wRxDth9bWSuk0qVL2emc7lT5ik=
+github.com/jeffscottbrown/goapple v0.1.0 h1:Ke/VaLup7R1T8/6ciXkAxKnGCR9xB2JKlSUE7VeZt6g=
+github.com/jeffscottbrown/goapple v0.1.0/go.mod h1:i4y/osFaL3o9ztvUyxU0yx8jcjWbSTt3zNDM0hJzfDk=
+github.com/jeffscottbrown/goapple v0.2.0 h1:unuS65pfmzgMFQgc7QappEpo6MSI/1tEa62nX0MiJHc=
+github.com/jeffscottbrown/goapple v0.2.0/go.mod h1:i4y/osFaL3o9ztvUyxU0yx8jcjWbSTt3zNDM0hJzfDk=
 github.com/markbates/goth v1.80.0 h1:NnvatczZDzOs1hn9Ug+dVYf2Viwwkp/ZDX5K+GLjan8=
 github.com/markbates/goth v1.80.0/go.mod h1:4/GYHo+W6NWisrMPZnq0Yr2Q70UntNLn7KXEFhrIdAY=
 github.com/patrickmn/go-cache v2.1.0+incompatible h1:HRMgzkcYKYpi3C8ajMPV8OFXaaRUnok+kx1WdO15EQc=

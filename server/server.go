@@ -5,8 +5,8 @@ import (
 
 	"github.com/go-chi/chi"
 	"github.com/jeffscottbrown/applemusic/auth"
-	"github.com/jeffscottbrown/applemusic/search"
 	"github.com/jeffscottbrown/applemusic/templates"
+	"github.com/jeffscottbrown/goapple/music"
 )
 
 func Run() {
@@ -33,7 +33,7 @@ func configureApplicationHandlers(router *chi.Mux) {
 	router.Post("/search", func(w http.ResponseWriter, r *http.Request) {
 		bandName := r.FormValue("band_name")
 		limit := r.FormValue("limit")
-		searchResult, _ := search.SearchApple(bandName, limit)
+		searchResult, _ := music.SearchApple(bandName, limit)
 		templates.Results(searchResult).Render(r.Context(), w)
 
 	})
