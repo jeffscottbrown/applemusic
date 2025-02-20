@@ -9,7 +9,7 @@ import (
 	"github.com/go-chi/chi"
 	"github.com/google/uuid"
 	"github.com/gorilla/sessions"
-	"github.com/jeffscottbrown/applemusic/secrets"
+	"github.com/jeffscottbrown/gogoogle/secrets"
 	"github.com/markbates/goth"
 	"github.com/markbates/goth/gothic"
 	"github.com/markbates/goth/providers/google"

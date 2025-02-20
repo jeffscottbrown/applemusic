@@ -51,6 +51,8 @@ github.com/jeffscottbrown/goapple v0.1.0 h1:Ke/VaLup7R1T8/6ciXkAxKnGCR9xB2JKlSUE
 github.com/jeffscottbrown/goapple v0.1.0/go.mod h1:i4y/osFaL3o9ztvUyxU0yx8jcjWbSTt3zNDM0hJzfDk=
 github.com/jeffscottbrown/goapple v0.2.0 h1:unuS65pfmzgMFQgc7QappEpo6MSI/1tEa62nX0MiJHc=
 github.com/jeffscottbrown/goapple v0.2.0/go.mod h1:i4y/osFaL3o9ztvUyxU0yx8jcjWbSTt3zNDM0hJzfDk=
+github.com/jeffscottbrown/gogoogle v0.1.0 h1:y1ym+/b6rmqOmPhuOjwA+5ia8Y/SgXocyhrpnPpqnb8=
+github.com/jeffscottbrown/gogoogle v0.1.0/go.mod h1:0L6t2973Q2evAphNuhgi9WYHEPYt9Rkx57VP/aaodfY=
 github.com/markbates/goth v1.80.0 h1:NnvatczZDzOs1hn9Ug+dVYf2Viwwkp/ZDX5K+GLjan8=
 github.com/markbates/goth v1.80.0/go.mod h1:4/GYHo+W6NWisrMPZnq0Yr2Q70UntNLn7KXEFhrIdAY=
 github.com/patrickmn/go-cache v2.1.0+incompatible h1:HRMgzkcYKYpi3C8ajMPV8OFXaaRUnok+kx1WdO15EQc=
