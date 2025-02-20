@@ -17,8 +17,7 @@ import (
 
 func login(res http.ResponseWriter, req *http.Request) {
 	if _, err := gothic.CompleteUserAuth(res, req); err == nil {
-		res.Header().Set("Location", "/")
-		res.WriteHeader(http.StatusTemporaryRedirect)
+		http.Redirect(res, req, "/", http.StatusTemporaryRedirect)
 	} else {
 		gothic.BeginAuthHandler(res, req)
 	}
@@ -27,8 +26,7 @@ func login(res http.ResponseWriter, req *http.Request) {
 func logout(res http.ResponseWriter, req *http.Request) {
 	gothic.Logout(res, req)
 	slog.Info("User logged out")
-	res.Header().Set("Location", "/")
-	res.WriteHeader(http.StatusTemporaryRedirect)
+	http.Redirect(res, req, "/", http.StatusTemporaryRedirect)
 }
 
 func authCallback(res http.ResponseWriter, req *http.Request) {
@@ -42,8 +40,7 @@ func authCallback(res http.ResponseWriter, req *http.Request) {
 
 	gothic.StoreInSession("authenticatedUser", user.Name, req, res)
 
-	res.Header().Set("Location", "/")
-	res.WriteHeader(http.StatusTemporaryRedirect)
+	http.Redirect(res, req, "/", http.StatusTemporaryRedirect)
 }
 
 func IsAuthenticated(req *http.Request) bool {
