@@ -45,5 +45,5 @@ docker run -p 8080:8080 \
     -e GOOGLE_SECRET=$GOOGLE_SECRET \
     -e GOOGLE_ID=$GOOGLE_ID \
     -e GOOGLE_CALLBACK_URL=$GOOGLE_CALLBACK_URL \
-    -p 8080:8080 docker.io/jeffscottbrown/applemusic:latest
+    docker.io/jeffscottbrown/applemusic:latest
 ```
