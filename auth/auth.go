@@ -81,7 +81,7 @@ func retrieveSecretValue(secretName string) string {
 func ConfigureAuthorizationHandlers(router *chi.Mux) {
 	router.Get("/auth/{provider}/callback", providerAwareHandler(authCallback))
 	router.Get("/logout/{provider}", providerAwareHandler(logout))
-	router.Get("/auth/{provider}", providerAwareHandler(login))
+	router.Get("/login/{provider}", providerAwareHandler(login))
 }
 
 // gothic tries a number of techniques to retrieve the provider
