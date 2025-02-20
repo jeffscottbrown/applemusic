@@ -85,8 +85,8 @@ func ConfigureAuthorizationHandlers(router *chi.Mux) {
 }
 
 // gothic tries a number of techniques to retrieve the provider
-// from the URL but it does not use PathValue, which is how
-// the standard library provides access to the value
+// from the URL but none of them are compatible with how
+// the chi library provides access to the value
 // see https://github.com/markbates/goth/blob/260588e82ba14930ae070a80acadcf0f75348c05/gothic/gothic.go#L263
 // this wrapper will add the provider to the context in a way that gothic can use
 
