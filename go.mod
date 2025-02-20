@@ -5,6 +5,7 @@ go 1.24.0
 require (
 	cloud.google.com/go/secretmanager v1.14.5
 	github.com/a-h/templ v0.3.833
+	github.com/go-chi/chi v1.5.5
 	github.com/google/uuid v1.6.0
 	github.com/gorilla/sessions v1.4.0
 	github.com/markbates/goth v1.80.0

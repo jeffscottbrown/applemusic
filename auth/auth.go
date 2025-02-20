@@ -6,6 +6,7 @@ import (
 	"net/http"
 	"os"
 
+	"github.com/go-chi/chi"
 	"github.com/google/uuid"
 	"github.com/gorilla/sessions"
 	"github.com/jeffscottbrown/applemusic/secrets"
@@ -80,10 +81,10 @@ func retrieveSecretValue(secretName string) string {
 	return clientSecret
 }
 
-func ConfigureAuthorizationHandlers(router *http.ServeMux) {
-	router.HandleFunc("GET /auth/{provider}/callback", providerAwareHandler(authCallback))
-	router.HandleFunc("GET /logout/{provider}", providerAwareHandler(logout))
-	router.HandleFunc("GET /auth/{provider}", providerAwareHandler(login))
+func ConfigureAuthorizationHandlers(router *chi.Mux) {
+	router.Get("/auth/{provider}/callback", providerAwareHandler(authCallback))
+	router.Get("/logout/{provider}", providerAwareHandler(logout))
+	router.Get("/auth/{provider}", providerAwareHandler(login))
 }
 
 // gothic tries a number of techniques to retrieve the provider
@@ -93,10 +94,9 @@ func ConfigureAuthorizationHandlers(router *http.ServeMux) {
 // this wrapper will add the provider to the context in a way that gothic can use
 
 func providerAwareHandler(h http.HandlerFunc) http.HandlerFunc {
-	return func(w http.ResponseWriter, r *http.Request) {
-		provider := r.PathValue("provider")
-		r = r.WithContext(context.WithValue(context.Background(), "provider", provider))
-
-		h(w, r)
+	return func(w http.ResponseWriter, req *http.Request) {
+		provider := chi.URLParam(req, "provider")
+		req = req.WithContext(context.WithValue(context.Background(), "provider", provider))
+		h(w, req)
 	}
 }
