@@ -3,8 +3,9 @@ package templates
 import (
 	"fmt"
 	"github.com/jeffscottbrown/applemusic/commit"
-	"github.com/jeffscottbrown/applemusic/constants"
 )
+
+const GitHubRepo = "https://github.com/jeffscottbrown/applemusic"
 
 templ Home(isAuthenticated bool) {
 	<!DOCTYPE html>
@@ -27,7 +28,7 @@ templ footer() {
 	<footer class="footer bg-light text-center text-lg-start">
 		<div class="container p-4">
 			<div class="text-center p-3">
-				<span>Built from commit <a href={ templ.URL(fmt.Sprintf("%s/tree/%s", constants.GitHubRepo, commit.Hash)) }>{ commit.Hash }</a> at { commit.BuildTime }</span>
+				<span>Built from commit <a href={ templ.URL(fmt.Sprintf("%s/tree/%s", GitHubRepo, commit.Hash)) }>{ commit.Hash }</a> at { commit.BuildTime }</span>
 			</div>
 		</div>
 	</footer>
