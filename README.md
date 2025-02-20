@@ -24,13 +24,18 @@ port number. Note that this URL must be configured as an authorized redirect URI
 when configuring the credentials in the Google API console.
 
 With those environment variables set, the application should be ready to run.
+
 ```bash
+templ generate
 go run .
 ```
 
-That will serve the browswer interface at http://localhost:8080 and
-will serve a JSON API at `http://localhost:8080/search/[band name goes here]`,
-for example http://localhost:8080/search/Phish.
+The application may be run using [Air](https://github.com/air-verse/air) in which case the templ generation does not need to be explicitly invoked.
+
+```bash
+air
+`
+That will serve the browswer interface at http://localhost:8080.
 
 Alternatively the application may be run in a Docker container.  
 
