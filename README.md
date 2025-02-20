@@ -34,7 +34,8 @@ The application may be run using [Air](https://github.com/air-verse/air) in whic
 
 ```bash
 air
-`
+```
+
 That will serve the browswer interface at http://localhost:8080.
 
 Alternatively the application may be run in a Docker container.  
