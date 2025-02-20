@@ -38,7 +38,7 @@ func configureApplicationHandlers(router *chi.Mux) {
 
 	})
 	router.Get("/", func(w http.ResponseWriter, r *http.Request) {
-		templates.Home(r).Render(r.Context(), w)
+		templates.Home(auth.IsAuthenticated(r)).Render(r.Context(), w)
 	})
 }
 
