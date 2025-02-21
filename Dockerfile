@@ -1,6 +1,6 @@
 FROM golang:1.24-alpine AS appbuilder
 
-ARG GIT_COMMIT
+ARG GITHUB_TAG
 
 WORKDIR /build
 
