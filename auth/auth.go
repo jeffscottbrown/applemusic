@@ -94,11 +94,11 @@ func retrieveSecretValue(secretName string) string {
 }
 
 func ConfigureAuthorizationHandlers(router *gin.Engine) {
-	authGroup := router.Group("/auth/:provider")
+	providerAwareGroup := router.Group("/auth/:provider")
 
-	authGroup.Use(providerAware())
-	authGroup.GET("/callback", authCallback)
-	authGroup.GET("/login", login)
+	providerAwareGroup.Use(providerAware())
+	providerAwareGroup.GET("/callback", authCallback)
+	providerAwareGroup.GET("/login", login)
 
 	router.GET("/auth/logout", logout)
 
