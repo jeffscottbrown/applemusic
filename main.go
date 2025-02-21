@@ -10,7 +10,7 @@ import (
 func main() {
 	logging.Configure()
 
-	slog.Debug("Build Info", "Build Time", commit.BuildTime, "Commit Hash", commit.Hash)
+	slog.Debug("Build Info", "Build Time", commit.BuildTime, "Commit Tag", commit.Tag)
 
 	server.Run()
 }

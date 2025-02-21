@@ -1,5 +1,5 @@
 package commit
 
 // These values may be overriden at build time using ldflags
-var Hash = "main"
+var Tag = "main"
 var BuildTime = "now"
