@@ -6,7 +6,7 @@ import (
 	"net/http"
 	"os"
 
-	"github.com/go-chi/chi"
+	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
 	"github.com/gorilla/sessions"
 	"github.com/jeffscottbrown/gogoogle/secrets"
@@ -15,7 +15,9 @@ import (
 	"github.com/markbates/goth/providers/google"
 )
 
-func login(res http.ResponseWriter, req *http.Request) {
+func login(c *gin.Context) {
+	req := c.Request
+	res := c.Writer
 	if _, err := gothic.CompleteUserAuth(res, req); err == nil {
 		http.Redirect(res, req, "/", http.StatusTemporaryRedirect)
 	} else {
@@ -23,13 +25,17 @@ func login(res http.ResponseWriter, req *http.Request) {
 	}
 }
 
-func logout(res http.ResponseWriter, req *http.Request) {
+func logout(c *gin.Context) {
+	req := c.Request
+	res := c.Writer
 	gothic.Logout(res, req)
 	slog.Info("User logged out")
 	http.Redirect(res, req, "/", http.StatusTemporaryRedirect)
 }
 
-func authCallback(res http.ResponseWriter, req *http.Request) {
+func authCallback(c *gin.Context) {
+	req := c.Request
+	res := c.Writer
 	user, err := gothic.CompleteUserAuth(res, req)
 	if err != nil {
 		slog.Error("Error authenticating user", "error", err)
@@ -78,22 +84,23 @@ func retrieveSecretValue(secretName string) string {
 	return clientSecret
 }
 
-func ConfigureAuthorizationHandlers(router *chi.Mux) {
-	router.Get("/auth/{provider}/callback", providerAwareHandler(authCallback))
-	router.Get("/logout/{provider}", providerAwareHandler(logout))
-	router.Get("/login/{provider}", providerAwareHandler(login))
+func ConfigureAuthorizationHandlers(router *gin.Engine) {
+	router.GET("/auth/:provider/callback", providerAwareHandler(authCallback))
+	router.GET("/logout/:provider", providerAwareHandler(logout))
+	router.GET("/login/:provider", providerAwareHandler(login))
 }
 
 // gothic tries a number of techniques to retrieve the provider
 // from the URL but none of them are compatible with how
-// the chi library provides access to the value
+// the gin library provides access to the value
 // see https://github.com/markbates/goth/blob/260588e82ba14930ae070a80acadcf0f75348c05/gothic/gothic.go#L263
 // this wrapper will add the provider to the context in a way that gothic can use
 
-func providerAwareHandler(h http.HandlerFunc) http.HandlerFunc {
-	return func(w http.ResponseWriter, req *http.Request) {
-		provider := chi.URLParam(req, "provider")
-		req = req.WithContext(context.WithValue(context.Background(), "provider", provider))
-		h(w, req)
+func providerAwareHandler(h gin.HandlerFunc) gin.HandlerFunc {
+	return func(c *gin.Context) {
+		req := c.Request
+		provider := c.Param("provider")
+		c.Request = req.WithContext(context.WithValue(context.Background(), "provider", provider))
+		h(c)
 	}
 }

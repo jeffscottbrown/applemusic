@@ -3,7 +3,7 @@ package server
 import (
 	"net/http"
 
-	"github.com/go-chi/chi"
+	"github.com/gin-gonic/gin"
 	"github.com/jeffscottbrown/applemusic/auth"
 	"github.com/jeffscottbrown/applemusic/templates"
 	"github.com/jeffscottbrown/goapple/music"
@@ -19,8 +19,8 @@ func Run() {
 	server.ListenAndServe()
 }
 
-func createAndConfigureRouter() *chi.Mux {
-	router := chi.NewRouter()
+func createAndConfigureRouter() *gin.Engine {
+	router := gin.Default()
 	configureApplicationHandlers(router)
 	configureStaticResourceHandler(router)
 
@@ -29,21 +29,23 @@ func createAndConfigureRouter() *chi.Mux {
 	return router
 }
 
-func configureApplicationHandlers(router *chi.Mux) {
-	router.Post("/search", func(w http.ResponseWriter, r *http.Request) {
-		bandName := r.FormValue("band_name")
-		limit := r.FormValue("limit")
+func configureApplicationHandlers(router *gin.Engine) {
+	router.POST("/search", func(c *gin.Context) {
+		r := c.Request
+		w := c.Writer
+		bandName := c.PostForm("band_name")
+		limit := c.PostForm("limit")
 		searchResult, _ := music.SearchApple(bandName, limit)
 		templates.Results(searchResult).Render(r.Context(), w)
 
 	})
-	router.Get("/", func(w http.ResponseWriter, r *http.Request) {
+	router.GET("/", func(c *gin.Context) {
+		r := c.Request
+		w := c.Writer
 		templates.Home(auth.IsAuthenticated(r)).Render(r.Context(), w)
 	})
 }
 
-func configureStaticResourceHandler(router *chi.Mux) {
-	dir := http.Dir("./web/assets/")
-	fs := http.FileServer(dir)
-	router.Handle("/static/*", http.StripPrefix("/static/", fs))
+func configureStaticResourceHandler(router *gin.Engine) {
+	router.Static("/static", "./web/assets")
 }
