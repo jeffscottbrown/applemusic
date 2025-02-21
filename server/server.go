@@ -1,7 +1,6 @@
 package server
 
 import (
-	"embed"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -49,10 +48,6 @@ func configureApplicationHandlers(router *gin.Engine) {
 	})
 }
 
-// go:embed web/assets
-var staticFiles embed.FS
-
 func configureStaticResourceHandler(router *gin.Engine) {
-	var staticFs = http.FS(staticFiles)
-	router.StaticFS("/static", staticFs)
+	router.Static("/static", "./web/assets")
 }
