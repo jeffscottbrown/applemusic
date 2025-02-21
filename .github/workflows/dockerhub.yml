@@ -24,9 +24,6 @@ jobs:
         run: |
           TAG=${{ github.ref_name }}
           echo "GITHUB_TAG=${TAG}" >> $GITHUB_ENV
-      - name: Setup Docker Image Version Number
-        run: |
-          TAG=${{ github.ref_name }}
           echo "DOCKER_IMAGE_VERSION=${TAG#v}" >> $GITHUB_ENV
       - name: Build and push
         uses: docker/build-push-action@v6
