@@ -15,6 +15,12 @@ import (
 	"github.com/markbates/goth/providers/google"
 )
 
+type oauthConfig struct {
+	googleId     string
+	googleSecret string
+	callbackUrl  string
+}
+
 func login(c *gin.Context) {
 	req := c.Request
 	res := c.Writer
@@ -58,21 +64,24 @@ func init() {
 	gothic.Store = sessions.NewCookieStore([]byte(uuid.NewString()))
 	slog.Debug("Configuring authentication providers")
 
-	googleId, googleSecret, callbackUrl := oauthConfig()
+	config := createOauthConfig()
 
 	goth.UseProviders(
-		google.New(googleId, googleSecret, callbackUrl, "profile"),
+		google.New(config.googleId, config.googleSecret, config.callbackUrl, "profile"),
 	)
 }
 
-func oauthConfig() (string, string, string) {
-	googleSecret := retrieveSecretValue("GOOGLE_SECRET")
+func createOauthConfig() *oauthConfig {
 	callbackUrl := retrieveSecretValue("GOOGLE_CALLBACK_URL")
 	if callbackUrl == "" {
 		callbackUrl = "http://localhost:8080/auth/google/callback"
 	}
-	googleId := retrieveSecretValue("GOOGLE_ID")
-	return googleId, googleSecret, callbackUrl
+
+	return &oauthConfig{
+		callbackUrl:  callbackUrl,
+		googleId:     retrieveSecretValue("GOOGLE_ID"),
+		googleSecret: retrieveSecretValue("GOOGLE_SECRET"),
+	}
 }
 
 func retrieveSecretValue(secretName string) string {
