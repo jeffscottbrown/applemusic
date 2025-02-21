@@ -32,6 +32,7 @@ jobs:
         uses: docker/build-push-action@v6
         with:
           push: true
+          platforms: linux/amd64,linux/arm64
           build-args: |
             GIT_COMMIT=${{env.GIT_COMMIT}}
             PROJECT_ID=${{secrets.PROJECT_ID}}
