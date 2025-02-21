@@ -18,6 +18,7 @@ FROM gcr.io/distroless/static-debian12
 
 ARG PROJECT_ID
 ENV PROJECT_ID=$PROJECT_ID
+ENV GIN_MODE=release
 
 WORKDIR /app
 COPY --from=appbuilder /build/musicsearch .
