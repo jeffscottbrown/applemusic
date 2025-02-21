@@ -104,3 +104,15 @@ func providerAwareHandler(h gin.HandlerFunc) gin.HandlerFunc {
 		h(c)
 	}
 }
+
+func AuthRequired() gin.HandlerFunc {
+	return func(c *gin.Context) {
+
+		if !IsAuthenticated(c.Request) {
+			c.AbortWithStatus(http.StatusUnauthorized)
+			return
+		}
+
+		c.Next()
+	}
+}

@@ -30,7 +30,7 @@ func createAndConfigureRouter() *gin.Engine {
 }
 
 func configureApplicationHandlers(router *gin.Engine) {
-	router.POST("/search", func(c *gin.Context) {
+	router.POST("/search", auth.AuthRequired(), func(c *gin.Context) {
 		r := c.Request
 		w := c.Writer
 		bandName := c.PostForm("band_name")
