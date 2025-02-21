@@ -12,7 +12,7 @@ COPY . .
 
 RUN go install github.com/a-h/templ/cmd/templ@latest
 RUN templ generate
-RUN CGO_ENABLED=0 go build -ldflags "-X github.com/jeffscottbrown/applemusic/commit.Tag=$GITHUB_TAG -X github.com/jeffscottbrown/applemusic/commit.BuildTime=$(date -u)" -o musicsearch .
+RUN CGO_ENABLED=0 go build -ldflags "-X github.com/jeffscottbrown/applemusic/commit.Tag=$GITHUB_TAG -X github.com/jeffscottbrown/applemusic/commit.BuildTime=$(date -u +'%a %B %d %Y %r %Z')" -o musicsearch .
 
 FROM gcr.io/distroless/static-debian12
 
