@@ -98,8 +98,10 @@ func ConfigureAuthorizationHandlers(router *gin.Engine) {
 
 	authGroup.Use(providerAware())
 	authGroup.GET("/callback", authCallback)
-	authGroup.GET("/logout", logout)
 	authGroup.GET("/login", login)
+
+	router.GET("/auth/logout", logout)
+
 }
 
 // gothic tries a number of techniques to retrieve the provider
