@@ -14,7 +14,7 @@ templ Home(isAuthenticated bool) {
 		<body>
 			<main>
 				@nav(isAuthenticated)
-				if isAuthenticated == true {
+				if isAuthenticated {
 					@searchForm()
 				}
 				@footer()

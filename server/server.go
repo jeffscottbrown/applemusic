@@ -31,18 +31,20 @@ func createAndConfigureRouter() *gin.Engine {
 
 func configureApplicationHandlers(router *gin.Engine) {
 	router.POST("/search", auth.AuthRequired(), func(c *gin.Context) {
-		r := c.Request
-		w := c.Writer
+		req := c.Request
+		res := c.Writer
 		bandName := c.PostForm("band_name")
 		limit := c.PostForm("limit")
 		searchResult, _ := music.SearchApple(bandName, limit)
-		templates.Results(searchResult).Render(r.Context(), w)
+		templates.Results(searchResult).Render(req.Context(), res)
 
 	})
 	router.GET("/", func(c *gin.Context) {
-		r := c.Request
-		w := c.Writer
-		templates.Home(auth.IsAuthenticated(r)).Render(r.Context(), w)
+		req := c.Request
+		res := c.Writer
+		isAuthenticated := auth.IsAuthenticated(req)
+
+		templates.Home(isAuthenticated).Render(req.Context(), res)
 	})
 }
 
