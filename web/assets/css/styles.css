@@ -27,6 +27,7 @@ input[type='radio'] {
     box-sizing: border-box;
     margin-left: 20px;
     margin-right: 5px;
+    outline: auto;
 }
 
 .footer {
