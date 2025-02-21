@@ -85,9 +85,12 @@ func retrieveSecretValue(secretName string) string {
 }
 
 func ConfigureAuthorizationHandlers(router *gin.Engine) {
-	router.GET("/auth/:provider/callback", providerAware(), authCallback)
-	router.GET("/logout/:provider", providerAware(), logout)
-	router.GET("/login/:provider", providerAware(), login)
+	authGroup := router.Group("/auth/:provider")
+
+	authGroup.Use(providerAware())
+	authGroup.GET("/callback", authCallback)
+	authGroup.GET("/logout", logout)
+	authGroup.GET("/login", login)
 }
 
 // gothic tries a number of techniques to retrieve the provider
