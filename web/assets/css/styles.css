@@ -14,6 +14,7 @@ input[type='text'] {
     border: 1px solid var(--gray);
     box-sizing: border-box;
     width: 100%;
+    outline: auto;
 }
 
 .max-results {
