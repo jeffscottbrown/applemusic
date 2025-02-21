@@ -9,7 +9,7 @@ https://godemo.jeffandbetsy.net right now.
 
 ## Running The App Locally
 
-The project requires 3 OS environment variables to be set.
+The project requires OS environment variables to be set.
 
 `GOOGLE_ID` - Client id from Google OAuth2 API credentials.
 
@@ -22,6 +22,11 @@ do not set this value, a default value of
 end with `/auth/google/callback` and you may change the host name and/or the
 port number. Note that this URL must be configured as an authorized redirect URI 
 when configuring the credentials in the Google API console.
+
+When deploying to GCP the system will attempt to resolve all of those values
+from the Google Secrets Manager.  In order for that to work you will need
+to set an environment variable named `PROJECT_ID` which is the id of the 
+GCP project which contains the secrets.
 
 With those environment variables set, the application should be ready to run.
 
