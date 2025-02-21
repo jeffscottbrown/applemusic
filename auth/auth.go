@@ -85,26 +85,26 @@ func retrieveSecretValue(secretName string) string {
 }
 
 func ConfigureAuthorizationHandlers(router *gin.Engine) {
-	router.GET("/auth/:provider/callback", providerAwareHandler(authCallback))
-	router.GET("/logout/:provider", providerAwareHandler(logout))
-	router.GET("/login/:provider", providerAwareHandler(login))
+	router.GET("/auth/:provider/callback", providerAware(), authCallback)
+	router.GET("/logout/:provider", providerAware(), logout)
+	router.GET("/login/:provider", providerAware(), login)
 }
 
 // gothic tries a number of techniques to retrieve the provider
 // from the URL but none of them are compatible with how
 // the gin library provides access to the value
 // see https://github.com/markbates/goth/blob/260588e82ba14930ae070a80acadcf0f75348c05/gothic/gothic.go#L263
-// this wrapper will add the provider to the context in a way that gothic can use
+// this middleware will add the provider to the context in a way that gothic can use
 
-func providerAwareHandler(h gin.HandlerFunc) gin.HandlerFunc {
+func providerAware() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		req := c.Request
 		provider := c.Param("provider")
 		c.Request = req.WithContext(context.WithValue(context.Background(), "provider", provider))
-		h(c)
+
+		c.Next()
 	}
 }
-
 func AuthRequired() gin.HandlerFunc {
 	return func(c *gin.Context) {
 
