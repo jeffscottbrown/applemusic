@@ -5,6 +5,7 @@ import (
 	"log/slog"
 	"net/http"
 	"os"
+	"strings"
 
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
@@ -12,12 +13,13 @@ import (
 	"github.com/jeffscottbrown/gogoogle/secrets"
 	"github.com/markbates/goth"
 	"github.com/markbates/goth/gothic"
+	"github.com/markbates/goth/providers/github"
 	"github.com/markbates/goth/providers/google"
 )
 
 type oauthConfig struct {
-	googleId     string
-	googleSecret string
+	clientId     string
+	clientSecret string
 	callbackUrl  string
 }
 
@@ -64,23 +66,32 @@ func init() {
 	gothic.Store = sessions.NewCookieStore([]byte(uuid.NewString()))
 	slog.Debug("Configuring authentication providers")
 
-	config := createOauthConfig()
+	googleConfig := createOauthConfig("google")
+	githubConfig := createOauthConfig("github")
 
 	goth.UseProviders(
-		google.New(config.googleId, config.googleSecret, config.callbackUrl, "profile"),
+		google.New(googleConfig.clientId, googleConfig.clientSecret, googleConfig.callbackUrl, "profile"),
+		github.New(githubConfig.clientId, githubConfig.clientSecret, githubConfig.callbackUrl, "user:email"),
 	)
 }
 
-func createOauthConfig() *oauthConfig {
-	callbackUrl := retrieveSecretValue("GOOGLE_CALLBACK_URL")
+func createOauthConfig(provider string) *oauthConfig {
+	providerUpperCase := strings.ToUpper(provider)
+	providerLowerCase := strings.ToLower(provider)
+
+	callbackUrlVarName := providerUpperCase + "_CALLBACK_URL"
+	idVarName := providerUpperCase + "_ID"
+	secretVarName := providerUpperCase + "_SECRET"
+
+	callbackUrl := retrieveSecretValue(callbackUrlVarName)
 	if callbackUrl == "" {
-		callbackUrl = "http://localhost:8080/auth/google/callback"
+		callbackUrl = "http://localhost:8080/auth/" + providerLowerCase + "/callback"
 	}
 
 	return &oauthConfig{
 		callbackUrl:  callbackUrl,
-		googleId:     retrieveSecretValue("GOOGLE_ID"),
-		googleSecret: retrieveSecretValue("GOOGLE_SECRET"),
+		clientId:     retrieveSecretValue(idVarName),
+		clientSecret: retrieveSecretValue(secretVarName),
 	}
 }
 
