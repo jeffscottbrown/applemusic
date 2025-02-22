@@ -5,8 +5,6 @@ import (
 	"github.com/jeffscottbrown/applemusic/commit"
 )
 
-const GitHubRepo = "https://github.com/jeffscottbrown/applemusic"
-
 templ Home(isAuthenticated bool) {
 	<!DOCTYPE html>
 	<html>
@@ -28,7 +26,7 @@ templ footer() {
 	<footer class="footer bg-light text-center text-lg-start">
 		<div class="container p-4">
 			<div class="text-center p-3">
-				<span>Built from commit <a href={ templ.URL(fmt.Sprintf("%s/tree/%s", GitHubRepo, commit.Tag)) }>{ commit.Tag }</a> at { commit.BuildTime }</span>
+				<span>Built from commit <a target="_blank" href={ templ.URL(fmt.Sprintf("https://github.com/jeffscottbrown/applemusic/tree/%s", commit.Tag)) }>{ commit.Tag }</a> at { commit.BuildTime }</span>
 			</div>
 		</div>
 	</footer>
