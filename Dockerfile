@@ -22,5 +22,4 @@ ENV GIN_MODE=release
 
 WORKDIR /app
 COPY --from=appbuilder /build/musicsearch .
-COPY --from=appbuilder /build/web/assets/ ./web/assets/
 CMD ["./musicsearch"]
