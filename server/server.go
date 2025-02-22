@@ -53,10 +53,5 @@ func configureApplicationHandlers(router *gin.Engine) {
 var staticFiles embed.FS
 
 func configureStaticResourceHandler(router *gin.Engine) {
-	fileServer := http.FileServer(http.FS(staticFiles))
-	x := http.StripPrefix("/static", fileServer)
-
-	router.GET("/static/*filepath", func(c *gin.Context) {
-		x.ServeHTTP(c.Writer, c.Request)
-	})
+	router.StaticFS("/static/", http.FS(staticFiles))
 }
