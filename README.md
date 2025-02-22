@@ -9,19 +9,20 @@ https://godemo.jeffandbetsy.net right now.
 
 ## Running The App Locally
 
-The project requires OS environment variables to be set.
+The project requires OS environment variables to be set in order
+to configure OAuth.  Both Google and GitHub are supported.
 
-`GOOGLE_ID` - Client id from Google OAuth2 API credentials.
+`GOOGLE_ID`, `GITHUB_ID` - Client id from Google OAuth2 API credentials.
 
-`GOOGLE_SECRET` - Client secret from Google OAuth2 API credentials.
+`GOOGLE_SECRET`, `GITHUB_SECRET` - Client secret from Google OAuth2 API credentials.
 
-Optionally you can set `GOOGLE_CALLBACK_URL` which will be used to tell Google
-OAuth2 where to call back into your application after authentication.  If you
+Optionally you can set `GOOGLE_CALLBACK_URL` and `GITHUB_CALLBACK_URL` which will be used 
+to tell the provider where to call back into your application after authentication.  If you
 do not set this value, a default value of
 `http://localhost:8080/auth/google/callback` will be used.  The value must
 end with `/auth/google/callback` and you may change the host name and/or the
 port number. Note that this URL must be configured as an authorized redirect URI 
-when configuring the credentials in the Google API console.
+when configuring the credentials.
 
 When deploying to GCP the system will attempt to resolve all of those values
 from the Google Secrets Manager.  In order for that to work you will need
