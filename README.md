@@ -12,9 +12,9 @@ https://godemo.jeffandbetsy.net right now.
 The project requires OS environment variables to be set in order
 to configure OAuth.  Both Google and GitHub are supported.
 
-`GOOGLE_ID`, `GITHUB_ID` - Client id from Google OAuth2 API credentials.
+`GOOGLE_ID`, `GITHUB_ID` - Client id for OAuth2 API credentials.
 
-`GOOGLE_SECRET`, `GITHUB_SECRET` - Client secret from Google OAuth2 API credentials.
+`GOOGLE_SECRET`, `GITHUB_SECRET` - Client secret for OAuth2 API credentials.
 
 Optionally you can set `GOOGLE_CALLBACK_URL` and `GITHUB_CALLBACK_URL` which will be used 
 to tell the provider where to call back into your application after authentication.  If you
