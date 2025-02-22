@@ -1,7 +1,6 @@
 package server
 
 import (
-	"embed"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -23,7 +22,6 @@ func Run() {
 func createAndConfigureRouter() *gin.Engine {
 	router := gin.Default()
 	configureApplicationHandlers(router)
-	configureStaticResourceHandler(router)
 
 	auth.ConfigureAuthorizationHandlers(router)
 
@@ -47,11 +45,4 @@ func configureApplicationHandlers(router *gin.Engine) {
 
 		templates.Home(isAuthenticated).Render(req.Context(), res)
 	})
-}
-
-//go:embed css
-var staticFiles embed.FS
-
-func configureStaticResourceHandler(router *gin.Engine) {
-	router.StaticFS("/static/", http.FS(staticFiles))
 }
