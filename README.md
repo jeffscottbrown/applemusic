@@ -32,14 +32,16 @@ GCP project which contains the secrets.
 With those environment variables set, the application should be ready to run.
 
 ```bash
-templ generate
+go tool templ generate
 go run .
 ```
 
-The application may be run using [Air](https://github.com/air-verse/air) in which case the templ generation does not need to be explicitly invoked.
+The application may be run using [Air](https://github.com/air-verse/air).  Note that 
+when using air to launch the app, air is configured to generate the templates 
+automatically so there is no need to do that explicitly.
 
 ```bash
-air
+go tool air
 ```
 
 That will serve the browswer interface at http://localhost:8080.
